@@ -6,7 +6,7 @@ package proyectojosemanuel;
 
 /**
  *
- * @author 
+ * @author JM
  */
 public class NodoLista {
     Estacion estacion;
