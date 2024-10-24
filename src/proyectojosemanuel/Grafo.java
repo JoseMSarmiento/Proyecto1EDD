@@ -54,34 +54,38 @@ public class Grafo {
     
     
         //procedimiento recursivo
-    public void recorrerProfundidad(int v, boolean[] visitados, int aux) {
+    public String[] recorrerProfundidad(int v, boolean[] visitados, int aux, String[] alcance) {
 //se marca el vértice v como visitado
         visitados[v] = true;
 //el tratamiento del vértice consiste únicamente en imprimirlo en pantalla
-        System.out.println(v);
+        alcance[v] = this.vertices[v].pEstacion.nombre;
+//        System.out.println(v);
 
         if (aux != t) {
 //se examinan los vértices adyacentes a v para continuar el recorrido
             for (int i = 0; i < this.maxVertices; i++) {
                 if ((v != i) && (!visitados[i]) && this.vertices[i].buscar(this.vertices[v].pEstacion.nombre) != null) {
-                    recorrerProfundidad(i, visitados, aux + 1);
+                    alcance = recorrerProfundidad(i, visitados, aux + 1, alcance);
                 }
             }
         }
+        return alcance;
     }
 //procedimiento no recursivo
 
-    public void profundidad() {
+    public void profundidad(String estacion) {
         boolean visitados[] = new boolean[this.maxVertices];
-
+        String[] alcance = new String[this.numVertices];
         for (int i = 0; i < this.maxVertices; i++) //inicializar vector con campos false
         {
+            alcance[i] = "";
             visitados[i] = false;
         }
         for (int i = 0; i < this.maxVertices; i++) { //Relanza el recorrido en cada
-            if (!visitados[i]) //vértice visitado
+            if (this.vertices[i].pEstacion.nombre.equals(estacion)) //vértice visitado
             {
-                recorrerProfundidad(i, visitados, 0);
+                String[] recorridoDFS = recorrerProfundidad(i, visitados, 0, alcance);
+                break;
             }
         }
     }
