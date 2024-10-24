@@ -87,7 +87,7 @@ public class Grafo {
         }
     }
 
-    public void amplitud(Grafo g) {
+    public void amplitud(String estacion) {
         String recorrido[] = new String[this.numVertices];
         ColaEstaciones cola = new ColaEstaciones();
         boolean visitados[] = new boolean[this.maxVertices];
@@ -99,7 +99,7 @@ public class Grafo {
 //El recorrido en amplitud se inicia en cada vértice no visitado
         for (int i = 0; i < this.maxVertices; i++) {
 //se pone en la cola el vértide de partida y se marca como visitado
-            if (!visitados[i]) {
+            if (!this.vertices[i].pEstacion.nombre.endsWith(estacion)) {
                 cola.encolar(this.vertices[i].pEstacion);
                 visitados[i] = true;
                 while (!cola.estaVacia()) {
