@@ -4,8 +4,6 @@
  */
 package proyectojosemanuel;
 
-
-
 /**
  *
  * @author JM
@@ -36,7 +34,7 @@ public class Grafo {
     }
 
     public void enlazar(String origen, String destino) {
-        if (this.buscar(origen) != null && this.buscar(destino) != null && this.buscar(destino).buscar(origen) == null) {        
+        if (this.buscar(origen) != null && this.buscar(destino) != null && this.buscar(destino).buscar(origen) == null) {
             this.buscar(origen).insertar(this.buscar(destino).pEstacion);
             this.buscar(destino).insertar(this.buscar(origen).pEstacion);
 
@@ -51,9 +49,8 @@ public class Grafo {
         }
         return null;
     }
-    
-    
-        //procedimiento recursivo
+
+    //procedimiento recursivo
     public String[] recorrerProfundidad(int v, boolean[] visitados, int aux, String[] alcance) {
 //se marca el vértice v como visitado
         visitados[v] = true;
@@ -88,6 +85,47 @@ public class Grafo {
                 break;
             }
         }
+    }
+
+    public void amplitud(Grafo g) {
+        String recorrido[] = new String[this.numVertices];
+        ColaEstaciones cola = new ColaEstaciones();
+        boolean visitados[] = new boolean[this.maxVertices];
+        int v = -1; //vértice actual
+//Se inicializa el vector visitados [] a false
+        for (int i = 0; i < this.maxVertices; i++) {
+            visitados[i] = false;
+        }
+//El recorrido en amplitud se inicia en cada vértice no visitado
+        for (int i = 0; i < this.maxVertices; i++) {
+//se pone en la cola el vértide de partida y se marca como visitado
+            if (!visitados[i]) {
+                cola.encolar(this.vertices[i].pEstacion);
+                visitados[i] = true;
+                while (!cola.estaVacia()) {
+                    Estacion desencolado = cola.desencolar(); //desencolar y tratar el vértice
+                    for (int j = 0; j < this.maxVertices; j++) {
+                        if (this.vertices[j].pEstacion.equals(desencolado)) {
+                            v = j;
+                        }
+
+                    }
+//                    System.out.println(v);
+                    recorrido[v] = desencolado.nombre;
+//y encolo los nodos adyacentes a v.
+                    for (int j = 0; j < this.maxVertices; j++) {
+                        if ((v != j) && this.hayArista(v, j) && (!visitados[j]))     {
+                            cola.encolar(this.vertices[j].pEstacion);
+                            visitados[j] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public boolean hayArista (int i, int j){
+        return this.vertices[i].buscar(this.vertices[j].pEstacion.nombre) != null;
     }
 
 }
